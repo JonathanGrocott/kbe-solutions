@@ -2,7 +2,13 @@
 class KnowledgeGraph {
     constructor(canvasId) {
         this.container = document.getElementById(canvasId);
-        if (!this.container) return;
+        if (!this.container) {
+            console.error(`Container element with id '${canvasId}' not found`);
+            return;
+        }
+        
+        console.log('Initializing Three.js Knowledge Graph...');
+        console.log('THREE object:', typeof THREE !== 'undefined' ? 'loaded' : 'not loaded');
         
         this.nodes = [];
         this.connections = [];
@@ -43,16 +49,25 @@ class KnowledgeGraph {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(this.colors.background);
         
+        // Get container dimensions
+        const containerWidth = this.container.clientWidth;
+        const containerHeight = this.container.clientHeight || 500;
+        const size = Math.min(containerWidth, containerHeight, 500);
+        
+        console.log('Container dimensions:', containerWidth, 'x', containerHeight);
+        console.log('Canvas size:', size);
+        
         // Create camera
-        const size = Math.min(this.container.clientWidth, 500);
         this.camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
         this.camera.position.z = 300;
         
         // Create renderer
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
         this.renderer.setSize(size, size);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.container.appendChild(this.renderer.domElement);
+        
+        console.log('Renderer created and appended to container');
         
         // Add ambient light
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
@@ -75,6 +90,8 @@ class KnowledgeGraph {
         this.createNodes();
         this.createConnections();
         this.createParticles();
+        
+        console.log('Graph initialized:', this.nodes.length, 'nodes,', this.connections.length, 'connections');
     }
     
     createNodes() {
