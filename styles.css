@@ -195,6 +195,11 @@ body {
     padding: 2rem;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--dark-border);
+    cursor: grab;
+}
+
+.graph-animation:active {
+    cursor: grabbing;
 }
 
 #knowledge-graph {
@@ -202,6 +207,7 @@ body {
     height: auto;
     display: block;
     border-radius: 10px;
+    touch-action: none;
 }
 
 /* About Section */

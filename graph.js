@@ -1,32 +1,36 @@
-// Animated Knowledge Graph Visualization - DBpedia Style
+// Interactive 3D Knowledge Graph with Three.js
 class KnowledgeGraph {
     constructor(canvasId) {
-        this.canvas = document.getElementById(canvasId);
-        if (!this.canvas) return;
+        this.container = document.getElementById(canvasId);
+        if (!this.container) return;
         
-        this.ctx = this.canvas.getContext('2d');
         this.nodes = [];
         this.connections = [];
+        this.nodeMeshes = [];
+        this.connectionLines = [];
         this.particles = [];
-        this.mouse = { x: null, y: null };
-        this.animationFrame = null;
+        this.particleMeshes = [];
         this.time = 0;
+        this.mouse = new THREE.Vector2();
+        this.raycaster = new THREE.Raycaster();
+        this.hoveredNode = null;
+        this.isDragging = false;
         
-        // Dark theme color palette - vibrant against dark background
+        // Dark theme color palette
         this.colors = {
             nodes: [
-                '#6366f1', // Indigo
-                '#0ea5e9', // Sky blue  
-                '#10b981', // Emerald
-                '#f59e0b', // Amber
-                '#ef4444', // Red
-                '#8b5cf6', // Purple
-                '#ec4899', // Pink
-                '#14b8a6'  // Teal
+                0x6366f1, // Indigo
+                0x0ea5e9, // Sky blue  
+                0x10b981, // Emerald
+                0xf59e0b, // Amber
+                0xef4444, // Red
+                0x8b5cf6, // Purple
+                0xec4899, // Pink
+                0x14b8a6  // Teal
             ],
-            connections: 'rgba(148, 163, 184, 0.15)',
-            particles: '#818cf8',
-            background: '#131318' // Dark surface color
+            connections: 0x94a3b8,
+            particles: 0x818cf8,
+            background: 0x131318
         };
         
         this.init();
@@ -35,332 +39,389 @@ class KnowledgeGraph {
     }
     
     init() {
-        this.resize();
+        // Create scene
+        this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color(this.colors.background);
+        
+        // Create camera
+        const size = Math.min(this.container.clientWidth, 500);
+        this.camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        this.camera.position.z = 300;
+        
+        // Create renderer
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer.setSize(size, size);
+        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.container.appendChild(this.renderer.domElement);
+        
+        // Add ambient light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        this.scene.add(ambientLight);
+        
+        // Add directional light
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(10, 10, 10);
+        this.scene.add(directionalLight);
+        
+        // Add point lights for dramatic effect
+        const pointLight1 = new THREE.PointLight(0x6366f1, 1, 200);
+        pointLight1.position.set(50, 50, 50);
+        this.scene.add(pointLight1);
+        
+        const pointLight2 = new THREE.PointLight(0x0ea5e9, 1, 200);
+        pointLight2.position.set(-50, -50, 50);
+        this.scene.add(pointLight2);
+        
         this.createNodes();
         this.createConnections();
-    }
-    
-    resize() {
-        const container = this.canvas.parentElement;
-        const size = Math.min(container.clientWidth, 500);
-        this.canvas.width = size;
-        this.canvas.height = size;
-        this.width = size;
-        this.height = size;
-        this.centerX = size / 2;
-        this.centerY = size / 2;
+        this.createParticles();
     }
     
     createNodes() {
-        // Create a more interconnected network like DBpedia's LOD cloud visualization
-        const nodeCount = 25; // More nodes for richer visualization
-        const centerRegionRadius = Math.min(this.width, this.height) * 0.15;
-        const maxRadius = Math.min(this.width, this.height) * 0.4;
+        const nodeCount = 25;
+        const radius = 150;
         
-        // Create nodes in clusters with varied sizes
         for (let i = 0; i < nodeCount; i++) {
-            // Distribute nodes in a more organic, clustered way
-            const angle = (i / nodeCount) * Math.PI * 2 + Math.random() * 0.5;
-            const distanceFromCenter = centerRegionRadius + Math.random() * (maxRadius - centerRegionRadius);
+            // Distribute nodes in 3D space
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const r = radius * (0.3 + Math.random() * 0.7);
             
-            // Vary node sizes more dramatically
+            const x = r * Math.sin(phi) * Math.cos(theta);
+            const y = r * Math.sin(phi) * Math.sin(theta);
+            const z = r * Math.cos(phi);
+            
+            // Vary node sizes
             const sizeCategory = Math.random();
-            let radius;
+            let nodeRadius;
             if (sizeCategory < 0.6) {
-                radius = 6 + Math.random() * 6; // Small nodes (60%)
+                nodeRadius = 3 + Math.random() * 3;
             } else if (sizeCategory < 0.85) {
-                radius = 12 + Math.random() * 8; // Medium nodes (25%)
+                nodeRadius = 6 + Math.random() * 4;
             } else {
-                radius = 20 + Math.random() * 10; // Large hub nodes (15%)
+                nodeRadius = 10 + Math.random() * 5;
             }
             
-            const x = this.centerX + Math.cos(angle) * distanceFromCenter;
-            const y = this.centerY + Math.sin(angle) * distanceFromCenter;
+            const color = this.colors.nodes[i % this.colors.nodes.length];
+            
+            // Create sphere geometry with more segments for smoother appearance
+            const geometry = new THREE.SphereGeometry(nodeRadius, 32, 32);
+            const material = new THREE.MeshPhongMaterial({
+                color: color,
+                emissive: color,
+                emissiveIntensity: 0.2,
+                shininess: 100,
+                transparent: true,
+                opacity: 0.9
+            });
+            
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(x, y, z);
+            
+            // Store original position and other data
+            mesh.userData = {
+                basePosition: { x, y, z },
+                baseRadius: nodeRadius,
+                color: color,
+                pulseOffset: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.001,
+                velocity: new THREE.Vector3(
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1
+                )
+            };
+            
+            this.scene.add(mesh);
+            this.nodeMeshes.push(mesh);
             
             this.nodes.push({
-                x: x,
-                y: y,
-                baseX: x,
-                baseY: y,
-                radius: radius,
-                baseRadius: radius,
-                color: this.colors.nodes[i % this.colors.nodes.length],
-                angle: angle,
-                distance: distanceFromCenter,
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3,
-                mass: radius, // Larger nodes have more mass
-                pulseOffset: Math.random() * Math.PI * 2,
-                rotationSpeed: (Math.random() - 0.5) * 0.0005
+                position: new THREE.Vector3(x, y, z),
+                radius: nodeRadius,
+                mesh: mesh
             });
         }
     }
     
     createConnections() {
-        // Create connections based on proximity and size (larger nodes connect to more)
+        // Create connections based on proximity
         this.nodes.forEach((node, i) => {
-            const connectionCount = Math.floor(node.radius / 4); // Larger nodes = more connections
-            const targets = [];
+            const connectionCount = Math.floor(node.radius / 2);
             
             // Find closest nodes
             const distances = this.nodes.map((other, j) => {
                 if (i === j) return { index: j, distance: Infinity };
-                const dx = node.x - other.x;
-                const dy = node.y - other.y;
-                return { index: j, distance: Math.sqrt(dx * dx + dy * dy) };
+                const distance = node.position.distanceTo(other.position);
+                return { index: j, distance };
             });
             
             distances.sort((a, b) => a.distance - b.distance);
             
             // Connect to closest nodes
             for (let c = 0; c < Math.min(connectionCount, 5); c++) {
-                const target = distances[c].index;
-                if (target !== i) {
-                    // Check if connection already exists
-                    const exists = this.connections.some(conn => 
-                        (conn.from === i && conn.to === target) ||
-                        (conn.from === target && conn.to === i)
-                    );
+                const targetIdx = distances[c].index;
+                
+                // Check if connection already exists
+                const exists = this.connections.some(conn => 
+                    (conn.from === i && conn.to === targetIdx) ||
+                    (conn.from === targetIdx && conn.to === i)
+                );
+                
+                if (!exists) {
+                    this.connections.push({
+                        from: i,
+                        to: targetIdx,
+                        strength: 0.1 + Math.random() * 0.3,
+                        particleSpeed: 0.002 + Math.random() * 0.005
+                    });
                     
-                    if (!exists) {
-                        this.connections.push({
-                            from: i,
-                            to: target,
-                            strength: 0.1 + Math.random() * 0.3,
-                            particleSpeed: 0.005 + Math.random() * 0.01
-                        });
-                    }
+                    // Create line geometry
+                    const points = [
+                        this.nodes[i].position.clone(),
+                        this.nodes[targetIdx].position.clone()
+                    ];
+                    
+                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    const material = new THREE.LineBasicMaterial({
+                        color: this.colors.connections,
+                        transparent: true,
+                        opacity: 0.3
+                    });
+                    
+                    const line = new THREE.Line(geometry, material);
+                    line.userData = { from: i, to: targetIdx };
+                    this.scene.add(line);
+                    this.connectionLines.push(line);
                 }
             }
         });
-        
-        // Create animated particles on connections
+    }
+    
+    createParticles() {
+        // Create particles that move along connections
         this.connections.forEach((conn, idx) => {
             const particleCount = Math.random() > 0.5 ? 1 : 2;
+            
             for (let i = 0; i < particleCount; i++) {
-                this.particles.push({
-                    connection: idx,
-                    progress: Math.random(),
-                    speed: conn.particleSpeed,
-                    size: 1.5 + Math.random() * 1.5
+                const geometry = new THREE.SphereGeometry(1.2, 16, 16);
+                const material = new THREE.MeshBasicMaterial({
+                    color: this.colors.particles,
+                    transparent: true,
+                    opacity: 0.8
                 });
+                
+                const particle = new THREE.Mesh(geometry, material);
+                particle.userData = {
+                    connectionIdx: idx,
+                    progress: Math.random(),
+                    speed: conn.particleSpeed
+                };
+                
+                this.scene.add(particle);
+                this.particleMeshes.push(particle);
             }
         });
     }
     
     setupEventListeners() {
-        window.addEventListener('resize', () => {
-            this.resize();
-            this.createNodes();
-            this.createConnections();
-        });
+        window.addEventListener('resize', () => this.onWindowResize());
         
-        this.canvas.addEventListener('mousemove', (e) => {
-            const rect = this.canvas.getBoundingClientRect();
-            this.mouse.x = e.clientX - rect.left;
-            this.mouse.y = e.clientY - rect.top;
-        });
+        this.renderer.domElement.addEventListener('mousemove', (e) => this.onMouseMove(e));
+        this.renderer.domElement.addEventListener('mousedown', (e) => this.onMouseDown(e));
+        this.renderer.domElement.addEventListener('mouseup', () => this.onMouseUp());
+        this.renderer.domElement.addEventListener('click', (e) => this.onClick(e));
         
-        this.canvas.addEventListener('mouseleave', () => {
-            this.mouse.x = null;
-            this.mouse.y = null;
+        // Touch support
+        this.renderer.domElement.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            this.onMouseMove(touch);
+            this.onMouseDown(touch);
+        });
+        this.renderer.domElement.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            this.onMouseMove(touch);
+        });
+        this.renderer.domElement.addEventListener('touchend', () => this.onMouseUp());
+    }
+    
+    onWindowResize() {
+        const size = Math.min(this.container.clientWidth, 500);
+        this.camera.aspect = 1;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(size, size);
+    }
+    
+    onMouseMove(event) {
+        const rect = this.renderer.domElement.getBoundingClientRect();
+        this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        
+        // Update raycaster
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        const intersects = this.raycaster.intersectObjects(this.nodeMeshes);
+        
+        // Handle hover effects
+        if (this.hoveredNode) {
+            this.hoveredNode.material.emissiveIntensity = 0.2;
+            this.renderer.domElement.style.cursor = 'grab';
+        }
+        
+        if (intersects.length > 0) {
+            this.hoveredNode = intersects[0].object;
+            this.hoveredNode.material.emissiveIntensity = 0.5;
+            this.renderer.domElement.style.cursor = 'pointer';
+        } else {
+            this.hoveredNode = null;
+        }
+    }
+    
+    onMouseDown(event) {
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        const intersects = this.raycaster.intersectObjects(this.nodeMeshes);
+        
+        if (intersects.length > 0) {
+            this.isDragging = true;
+            this.renderer.domElement.style.cursor = 'grabbing';
+        }
+    }
+    
+    onMouseUp() {
+        this.isDragging = false;
+        this.renderer.domElement.style.cursor = this.hoveredNode ? 'pointer' : 'grab';
+    }
+    
+    onClick(event) {
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        const intersects = this.raycaster.intersectObjects(this.nodeMeshes);
+        
+        if (intersects.length > 0) {
+            const clickedNode = intersects[0].object;
+            // Pulse animation on click
+            this.pulseNode(clickedNode);
+        }
+    }
+    
+    pulseNode(node) {
+        const originalScale = node.scale.x;
+        const targetScale = originalScale * 1.5;
+        const duration = 500;
+        const startTime = Date.now();
+        
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Ease out
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const scale = originalScale + (targetScale - originalScale) * Math.sin(eased * Math.PI);
+            
+            node.scale.set(scale, scale, scale);
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                node.scale.set(originalScale, originalScale, originalScale);
+            }
+        };
+        
+        animate();
+    }
+    
+    updateNodes() {
+        this.nodeMeshes.forEach((mesh, idx) => {
+            const data = mesh.userData;
+            
+            // Gentle floating motion
+            const floatX = Math.sin(this.time * 0.0008 + data.pulseOffset) * 2;
+            const floatY = Math.cos(this.time * 0.0006 + data.pulseOffset) * 2;
+            const floatZ = Math.sin(this.time * 0.0007 + data.pulseOffset) * 2;
+            
+            mesh.position.x = data.basePosition.x + floatX;
+            mesh.position.y = data.basePosition.y + floatY;
+            mesh.position.z = data.basePosition.z + floatZ;
+            
+            // Subtle rotation
+            mesh.rotation.x += data.rotationSpeed;
+            mesh.rotation.y += data.rotationSpeed * 1.3;
+            
+            // Subtle size pulsing
+            const pulse = 1 + Math.sin(this.time * 0.0015 + data.pulseOffset) * 0.1;
+            if (!this.isDragging || mesh !== this.hoveredNode) {
+                mesh.scale.set(pulse, pulse, pulse);
+            }
+            
+            // Update node position in nodes array
+            this.nodes[idx].position.copy(mesh.position);
         });
     }
     
-    updateNodes(time) {
-        this.time = time;
-        
-        this.nodes.forEach((node, idx) => {
-            // Gentle floating motion
-            node.angle += node.rotationSpeed;
-            const floatX = Math.sin(time * 0.0008 + node.pulseOffset) * 1.5;
-            const floatY = Math.cos(time * 0.0006 + node.pulseOffset) * 1.5;
+    updateConnections() {
+        this.connectionLines.forEach(line => {
+            const from = this.nodes[line.userData.from].position;
+            const to = this.nodes[line.userData.to].position;
             
-            node.x = node.baseX + floatX;
-            node.y = node.baseY + floatY;
-            
-            // Very subtle size pulsing
-            const pulse = 1 + Math.sin(time * 0.0015 + node.pulseOffset) * 0.08;
-            node.radius = node.baseRadius * pulse;
-            
-            // Mouse interaction - attract smaller nodes, repel larger ones
-            if (this.mouse.x !== null) {
-                const dx = this.mouse.x - node.x;
-                const dy = this.mouse.y - node.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < 120) {
-                    const force = (120 - distance) / 120;
-                    const strength = node.radius < 15 ? 3 : -5; // Small nodes attract, large repel
-                    node.x += (dx / distance) * force * strength;
-                    node.y += (dy / distance) * force * strength;
-                }
-            }
+            const positions = line.geometry.attributes.position;
+            positions.setXYZ(0, from.x, from.y, from.z);
+            positions.setXYZ(1, to.x, to.y, to.z);
+            positions.needsUpdate = true;
         });
     }
     
     updateParticles() {
-        this.particles.forEach(particle => {
-            particle.progress += particle.speed;
-            if (particle.progress > 1) {
-                particle.progress = 0;
+        this.particleMeshes.forEach(particle => {
+            const data = particle.userData;
+            data.progress += data.speed;
+            
+            if (data.progress > 1) {
+                data.progress = 0;
             }
-        });
-    }
-    
-    drawConnections() {
-this.ctx.globalAlpha = 0.5;
-        
-        this.connections.forEach(conn => {
-            const from = this.nodes[conn.from];
-            const to = this.nodes[conn.to];
             
-            // Calculate distance for dynamic opacity
-            const dx = to.x - from.x;
-            const dy = to.y - from.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            const maxDistance = Math.min(this.width, this.height) * 0.5;
-            const opacity = Math.max(0.15, 1 - (distance / maxDistance));
+            const conn = this.connections[data.connectionIdx];
+            const from = this.nodes[conn.from].position;
+            const to = this.nodes[conn.to].position;
             
-            // Draw connection with curved path for more organic feel
-            const midX = (from.x + to.x) / 2;
-            const midY = (from.y + to.y) / 2;
+            // Interpolate position along connection
+            particle.position.lerpVectors(from, to, data.progress);
             
-            // Calculate control point for curve
-            const perpX = -(to.y - from.y);
-            const perpY = (to.x - from.x);
-            const perpLength = Math.sqrt(perpX * perpX + perpY * perpY);
-            const curvature = 0.1;
-            const controlX = midX + (perpX / perpLength) * distance * curvature;
-            const controlY = midY + (perpY / perpLength) * distance * curvature;
-            
-            this.ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.4})`;
-            this.ctx.lineWidth = conn.strength * 2;
-            this.ctx.beginPath();
-            this.ctx.moveTo(from.x, from.y);
-            this.ctx.quadraticCurveTo(controlX, controlY, to.x, to.y);
-            this.ctx.stroke();
-        });
-        
-        this.ctx.globalAlpha = 1;
-    }
-    
-    drawParticles() {
-        this.particles.forEach(particle => {
-            const conn = this.connections[particle.connection];
-            const from = this.nodes[conn.from];
-            const to = this.nodes[conn.to];
-            
-            // Calculate curved path position
-            const dx = to.x - from.x;
-            const dy = to.y - from.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            const midX = (from.x + to.x) / 2;
-            const midY = (from.y + to.y) / 2;
-            
-            const perpX = -dy;
-            const perpY = dx;
-            const perpLength = Math.sqrt(perpX * perpX + perpY * perpY);
-            const curvature = 0.1;
-            const controlX = midX + (perpX / perpLength) * distance * curvature;
-            const controlY = midY + (perpY / perpLength) * distance * curvature;
-            
-            // Calculate position on curve
-            const t = particle.progress;
-            const mt = 1 - t;
-            const x = mt * mt * from.x + 2 * mt * t * controlX + t * t * to.x;
-            const y = mt * mt * from.y + 2 * mt * t * controlY + t * t * to.y;
-            
-            // Draw particle with subtle glow
-            const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, particle.size * 2);
-            gradient.addColorStop(0, this.colors.particles);
-            gradient.addColorStop(0.5, this.colors.particles + '88');
-            gradient.addColorStop(1, this.colors.particles + '00');
-            
-            this.ctx.fillStyle = gradient;
-            this.ctx.beginPath();
-            this.ctx.arc(x, y, particle.size * 2, 0, Math.PI * 2);
-            this.ctx.fill();
-            
-            // Bright center
-            this.ctx.fillStyle = '#ffffff';
-            this.ctx.beginPath();
-            this.ctx.arc(x, y, particle.size * 0.6, 0, Math.PI * 2);
-            this.ctx.fill();
-        });
-    }
-    
-    drawNodes() {
-        this.nodes.forEach((node, idx) => {
-            // Draw subtle outer glow - enhanced for dark background
-            const glowGradient = this.ctx.createRadialGradient(
-                node.x, node.y, node.radius * 0.3,
-                node.x, node.y, node.radius * 2.5
-            );
-            glowGradient.addColorStop(0, node.color + '66');
-            glowGradient.addColorStop(0.5, node.color + '33');
-            glowGradient.addColorStop(1, node.color + '00');
-            
-            this.ctx.fillStyle = glowGradient;
-            this.ctx.beginPath();
-            this.ctx.arc(node.x, node.y, node.radius * 2.5, 0, Math.PI * 2);
-            this.ctx.fill();
-            
-            // Draw main node with solid color (DBpedia style)
-            this.ctx.fillStyle = node.color;
-            this.ctx.beginPath();
-            this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-            this.ctx.fill();
-            
-            // Add white border for clarity
-            this.ctx.strokeStyle = '#ffffff';
-            this.ctx.lineWidth = Math.max(1.5, node.radius / 8);
-            this.ctx.beginPath();
-            this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-            this.ctx.stroke();
-            
-            // Add subtle inner shadow for depth
-            const innerGradient = this.ctx.createRadialGradient(
-                node.x - node.radius * 0.3,
-                node.y - node.radius * 0.3,
-                0,
-                node.x,
-                node.y,
-                node.radius
-            );
-            innerGradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
-            innerGradient.addColorStop(0.7, 'rgba(255, 255, 255, 0)');
-            innerGradient.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
-            
-            this.ctx.fillStyle = innerGradient;
-            this.ctx.beginPath();
-            this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-            this.ctx.fill();
+            // Add slight glow effect
+            particle.material.opacity = 0.6 + Math.sin(this.time * 0.005) * 0.2;
         });
     }
     
     animate() {
-        const time = Date.now();
+        this.time = Date.now();
         
-        // Clear canvas completely for clean rendering
-        this.ctx.fillStyle = this.colors.background;
-        this.ctx.fillRect(0, 0, this.width, this.height);
+        // Auto-rotate the entire scene for dynamic feel
+        this.scene.rotation.y += 0.0005;
         
-        // Update and draw in correct order
-        this.updateNodes(time);
+        this.updateNodes();
+        this.updateConnections();
         this.updateParticles();
-        this.drawConnections();
-        this.drawParticles();
-        this.drawNodes();
         
-        this.animationFrame = requestAnimationFrame(() => this.animate());
+        this.renderer.render(this.scene, this.camera);
+        
+        requestAnimationFrame(() => this.animate());
     }
     
     destroy() {
-        if (this.animationFrame) {
-            cancelAnimationFrame(this.animationFrame);
-        }
+        // Clean up Three.js resources
+        this.nodeMeshes.forEach(mesh => {
+            mesh.geometry.dispose();
+            mesh.material.dispose();
+        });
+        
+        this.connectionLines.forEach(line => {
+            line.geometry.dispose();
+            line.material.dispose();
+        });
+        
+        this.particleMeshes.forEach(particle => {
+            particle.geometry.dispose();
+            particle.material.dispose();
+        });
+        
+        this.renderer.dispose();
+        this.container.removeChild(this.renderer.domElement);
     }
 }
 
