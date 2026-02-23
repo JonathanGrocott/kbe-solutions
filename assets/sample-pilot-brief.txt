@@ -1,0 +1,48 @@
+KBE Solutions - Sample Pilot Brief
+Version: 1.0
+
+Objective
+- Improve one high-friction manufacturing workflow in 4-6 weeks.
+- Deliver measurable KPI movement before any scale decision.
+
+Recommended First Workflow
+- Engineering change control, CAPA triage, maintenance escalation, or supplier exception handling.
+
+Pilot Scope
+- One plant, one process owner, one KPI target.
+- Existing systems only (ERP/QMS/MES/spreadsheets/email notes).
+- No rip-and-replace implementation.
+
+Timeline
+- Week 1: Discovery, baseline KPI definition, and pilot success criteria.
+- Week 2-3: Decision map + context model setup.
+- Week 4-5: Guided usage with real workflow events.
+- Week 6: KPI readout and go/no-go recommendation.
+
+Inputs Required From Your Team
+- Process owner (1-2 hours/week).
+- Quality or operations lead (1 hour/week).
+- IT/data contact for read access validation (light touch).
+
+Deliverables
+- Searchable decision history with rationale and precedent links.
+- Pilot KPI baseline vs. observed results.
+- Rollout recommendation: expand, refine, or stop.
+- Exportable handoff documentation.
+
+Pilot Success Criteria (example)
+- 20%+ improvement in decision cycle time.
+- Reduced repeat escalations for same issue class.
+- Clear ownership and approval paths documented.
+
+Commercial Structure (directional)
+- Pilot engagement: low five figures, fixed scope.
+- Expansion: subscription scales by workflows/locations covered.
+
+Risk Controls
+- NDA available before technical sharing.
+- Scope and acceptance criteria documented in SOW.
+- Expand only if target KPI movement is demonstrated.
+
+Next Step
+- Share your workflow and KPI target; we return a scoped pilot plan.

@@ -5,11 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KBE Solutions - Manufacturing-First Decision Intelligence for AI</title>
     <meta name="description" content="KBE Solutions turns siloed engineering and manufacturing knowledge into AI-actionable data insights with context graphs and decision intelligence.">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#0b1117">
+    <meta property="og:title" content="KBE Solutions - Manufacturing-First Decision Intelligence for AI">
+    <meta property="og:description" content="KBE Solutions turns siloed engineering and manufacturing knowledge into AI-actionable data insights with context graphs and decision intelligence.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kbe-solutions.com/">
+    <meta property="og:image" content="https://kbe-solutions.com/assets/og-image.png">
+    <meta property="og:image:secure_url" content="https://kbe-solutions.com/assets/og-image.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="KBE Solutions Manufacturing-First Decision Intelligence for AI">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="KBE Solutions - Manufacturing-First Decision Intelligence for AI">
+    <meta name="twitter:description" content="KBE Solutions turns siloed engineering and manufacturing knowledge into AI-actionable data insights with context graphs and decision intelligence.">
+    <meta name="twitter:image" content="https://kbe-solutions.com/assets/og-image.png">
+    <meta name="twitter:image:alt" content="KBE Solutions Manufacturing-First Decision Intelligence for AI">
+    <link rel="canonical" href="https://kbe-solutions.com/">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b1117'/%3E%3Cpath d='M14 15h12v34H14zm24 0h12v34H38zM26 27h12v10H26z' fill='%2320d6c7'/%3E%3C/svg%3E">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://kbe-solutions.com/#organization",
+          "name": "KBE Solutions",
+          "url": "https://kbe-solutions.com/",
+          "logo": "https://kbe-solutions.com/assets/og-image.png",
+          "description": "KBE Solutions transforms engineering and manufacturing decision knowledge into AI-actionable context graphs."
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://kbe-solutions.com/#website",
+          "url": "https://kbe-solutions.com/",
+          "name": "KBE Solutions",
+          "publisher": {
+            "@id": "https://kbe-solutions.com/#organization"
+          }
+        },
+        {
+          "@type": "Service",
+          "@id": "https://kbe-solutions.com/#service",
+          "serviceType": "Decision intelligence for AI",
+          "provider": {
+            "@id": "https://kbe-solutions.com/#organization"
+          },
+          "areaServed": "US",
+          "description": "Manufacturing-first context graph services that capture decision lineage, precedent, and operational rationale for AI agents."
+        }
+      ]
+    }
+    </script>
+    <script>
+    window.KBE_ANALYTICS = {
+      ga4MeasurementId: "G-XXXXXXXXXX"
+    };
+
+    (function initAnalytics() {
+      const measurementId = window.KBE_ANALYTICS && window.KBE_ANALYTICS.ga4MeasurementId;
+      if (!measurementId || measurementId.indexOf("XXXX") !== -1) {
+        return;
+      }
+
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function gtag() {
+        window.dataLayer.push(arguments);
+      };
+
+      const gaScript = document.createElement("script");
+      gaScript.async = true;
+      gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(measurementId);
+      document.head.appendChild(gaScript);
+
+      window.gtag("js", new Date());
+      window.gtag("config", measurementId, {
+        anonymize_ip: true
+      });
+    })();
+    </script>
+    <script>document.documentElement.classList.add('js-enabled');</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
 </head>
 <body>
     <div id="site-graph" aria-hidden="true"></div>
@@ -19,57 +101,64 @@
 
     <nav class="nav">
         <div class="container nav-container">
-            <div class="logo">KBE Solutions</div>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#use-cases">Use Cases</a>
-                <a href="#why">Why</a>
-                <a href="#contact">Contact</a>
+            <a class="logo" href="#home">KBE Solutions</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation">
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+            </button>
+            <div class="nav-menu" id="primary-navigation">
+                <div class="nav-links">
+                    <a href="#home">Home</a>
+                    <a href="#fit">Fit</a>
+                    <a href="#proof">Results</a>
+                    <a href="#pilot">Pilot</a>
+                    <a href="#faq">FAQ</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <a class="nav-cta" href="#contact" data-track="cta_click" data-track-label="talk_to_us_nav" data-track-location="header">Talk to us</a>
             </div>
-            <a class="nav-cta" href="#contact">Talk to us</a>
         </div>
     </nav>
 
     <section id="home" class="hero">
         <div class="container hero-content">
             <div class="hero-text" data-reveal>
-                <div class="hero-badge">Manufacturing-first. Built for any industry with siloed knowledge.</div>
+                <div class="hero-badge">Built for small and midsize manufacturers.</div>
                 <h1 class="hero-title">
-                    The intelligence layer that turns
-                    <span class="gradient-text">engineering decisions into AI action</span>
+                    Reduce downtime, rework, and
+                    <span class="gradient-text">decision delays in 4-6 weeks</span>
                 </h1>
                 <p class="hero-subtitle">
-                    We capture the tribal knowledge, exceptions, and reasoning hidden across MES, PLM, ERP, quality,
-                    and maintenance systems, then model it as context graphs that AI can query, explain, and act on.
-                    Manufacturing is our specialty, with deployments that translate seamlessly to defense, healthcare,
-                    and other mission-critical domains.
+                    We help your team capture tribal knowledge and exception handling from daily operations, then turn
+                    it into a searchable decision system your people and AI tools can actually use.
+                    Start with one process, prove ROI quickly, then expand.
                 </p>
                 <div class="hero-actions">
-                    <a href="#contact" class="cta-primary">Request a demo</a>
-                    <a href="#use-cases" class="cta-secondary">Explore use cases</a>
+                    <a href="#pilot" class="cta-primary" data-track="cta_click" data-track-label="request_demo_hero" data-track-location="hero">See pilot plan</a>
+                    <a href="#contact" class="cta-secondary" data-track="cta_click" data-track-label="get_roi_estimate_hero" data-track-location="hero" data-prefill-message="We want an ROI estimate for our workflow. Our current bottleneck is:">Get ROI estimate</a>
                 </div>
                 <div class="hero-tags">
-                    <span>MES</span>
-                    <span>PLM</span>
                     <span>ERP</span>
+                    <span>MES</span>
                     <span>QMS</span>
-                    <span>EAM</span>
-                    <span>SCADA</span>
-                    <span>SAP</span>
-                    <span>ServiceNow</span>
+                    <span>Maintenance Logs</span>
+                    <span>Spreadsheets</span>
+                    <span>Email Approvals</span>
+                    <span>Shift Notes</span>
                 </div>
                 <div class="hero-metrics">
                     <div class="metric-card" data-reveal>
-                        <h4>Exception Traceability</h4>
-                        <p>Preserve the “why” behind every deviation, approval, and tradeoff.</p>
+                        <h4>20-40% Faster Approvals</h4>
+                        <p>Stop re-litigating the same exceptions and speed up change decisions.</p>
                     </div>
                     <div class="metric-card" data-reveal>
-                        <h4>Operational Context Graphs</h4>
-                        <p>Link people, assets, and precedents into a living decision fabric.</p>
+                        <h4>Lower Rework Risk</h4>
+                        <p>Capture why decisions were made so teams repeat wins, not mistakes.</p>
                     </div>
                     <div class="metric-card" data-reveal>
-                        <h4>AI-Ready Insight</h4>
-                        <p>Feed agents actionable context with lineage, provenance, and guardrails.</p>
+                        <h4>Small-Team Friendly</h4>
+                        <p>No big IT program required to run a focused, measurable pilot.</p>
                     </div>
                 </div>
             </div>
@@ -101,45 +190,45 @@
     <section class="signal-strip section-panel">
         <div class="container strip-content" data-reveal>
             <div class="strip-item">
-                <span class="strip-title">Plant-Floor Signals</span>
-                <p>Hidden context across MES, QMS, ERP, and maintenance logs.</p>
+                <span class="strip-title">Cut Decision Delays</span>
+                <p>Standardize exception handling so engineering and quality move faster.</p>
             </div>
             <div class="strip-item">
-                <span class="strip-title">Decision Graphs</span>
-                <p>Structured reasoning that connects signals to outcomes.</p>
+                <span class="strip-title">Keep Tribal Knowledge</span>
+                <p>Capture what senior people know before it walks out the door.</p>
             </div>
             <div class="strip-item">
-                <span class="strip-title">AI-Actionable Ops</span>
-                <p>Agents that can explain and execute with confidence.</p>
+                <span class="strip-title">Start Small, Scale Later</span>
+                <p>Begin with one line or workflow, then expand once ROI is proven.</p>
             </div>
         </div>
     </section>
 
     <section id="workspace" class="workspace section-panel">
         <div class="container workspace-intro" data-reveal>
-            <p class="eyebrow">Decision Workspace</p>
-            <h2>See decisions assemble in real time.</h2>
+            <p class="eyebrow">How It Works</p>
+            <h2>Launch one focused pilot in 4-6 weeks.</h2>
             <p>
-                A unified workspace connects MES, QMS, ERP, and engineering systems into a living decision layer.
-                Operators, analysts, and AI agents share the same context, with lineage that explains every choice.
+                We do not ask you to rebuild your systems. We connect to your current tools, map the decisions that
+                slow down production, and build a practical decision workflow your team can use immediately.
             </p>
             <ul class="workspace-list">
-                <li>Context stitching across people, assets, and exceptions</li>
-                <li>Decision paths highlighted with provenance</li>
-                <li>AI recommendations grounded in operational reality</li>
+                <li>Pick one process: change control, CAPA triage, maintenance escalation, or supplier exceptions</li>
+                <li>Connect existing data sources: ERP, MES, QMS, spreadsheets, and shift notes</li>
+                <li>Deliver a searchable decision history and measurable KPI improvements</li>
             </ul>
             <div class="workspace-highlights">
                 <div class="highlight-card">
-                    <h4>Signal Fusion</h4>
-                    <p>Merge telemetry, tickets, and approvals into one view.</p>
+                    <h4>Week 1-2</h4>
+                    <p>Map decisions, owners, and bottlenecks in your current workflow.</p>
                 </div>
                 <div class="highlight-card">
-                    <h4>Decision Lineage</h4>
-                    <p>Trace why a deviation or change was accepted.</p>
+                    <h4>Week 3-4</h4>
+                    <p>Implement decision capture, precedence logic, and traceability.</p>
                 </div>
                 <div class="highlight-card">
-                    <h4>Operational Control</h4>
-                    <p>Coordinate AI and human decisions across systems.</p>
+                    <h4>Week 5-6</h4>
+                    <p>Go live, measure cycle time impact, and hand off operating playbook.</p>
                 </div>
             </div>
         </div>
@@ -275,76 +364,257 @@
         </div>
     </section>
 
-    <section id="why" class="why section-panel">
+    <section id="fit" class="why section-panel">
         <div class="container why-content">
             <div class="why-copy" data-reveal>
-                <p class="eyebrow">Why it matters</p>
-                <h2>AI fails when the “why” is missing.</h2>
+                <p class="eyebrow">Fit Check</p>
+                <h2>Is this a fit for your plant?</h2>
                 <p>
-                    Your systems record what happened, but not why it happened. Context graphs capture the rationale
-                    behind every exception, approval, and tradeoff, so AI agents can reason with precedent instead of
-                    hallucinating answers.
+                    This works best for teams that already have data but struggle to make consistent decisions quickly.
+                    If approvals and exceptions depend on a few experts, we can help you standardize and speed up.
                 </p>
                 <div class="why-highlight">
-                    <h3>Make decisions replayable.</h3>
-                    <p>Every approval becomes a reusable, auditable signal that compounds your intelligence over time.</p>
+                    <h3>Typical starting point</h3>
+                    <p>One line, one process, one KPI target: decision cycle time, rework rate, or escalation volume.</p>
                 </div>
             </div>
             <div class="why-grid" data-reveal>
                 <div class="why-card">
-                    <h4>Without context graphs</h4>
+                    <h4>Good fit if...</h4>
                     <ul>
-                        <li>Teams re-litigate the same edge cases</li>
-                        <li>Decision history lives in threads and DMs</li>
-                        <li>AI agents guess at precedent</li>
-                        <li>Audit trails are incomplete</li>
+                        <li>You rely on email, meetings, and tribal knowledge for exception decisions</li>
+                        <li>Approval delays impact throughput, delivery, or quality costs</li>
+                        <li>You have 1-2 operations leaders available weekly for pilot feedback</li>
+                        <li>You want measurable results before scaling to more lines or plants</li>
                     </ul>
                 </div>
                 <div class="why-card accent">
-                    <h4>With context graphs</h4>
+                    <h4>Not ideal yet if...</h4>
                     <ul>
-                        <li>Precedent is searchable and reusable</li>
-                        <li>Agents explain why they chose an action</li>
-                        <li>Exceptions become reusable policy inputs</li>
-                        <li>Decisions are transparent and traceable</li>
+                        <li>You are still defining the core process and do not have stable ownership</li>
+                        <li>No one can dedicate at least 2 hours per week to pilot decisions</li>
+                        <li>Your team is not ready to adopt any workflow changes during the pilot window</li>
+                        <li>You need a full ERP or MES replacement instead of a decision layer</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="use-cases" class="use-cases section-panel">
+    <section id="roi" class="use-cases section-panel">
         <div class="container">
             <div class="section-header" data-reveal>
-                <p class="eyebrow">Use Cases</p>
-                <h2>Built for high-stakes engineering workflows</h2>
-                <p>Manufacturing is the proving ground, with outcomes that scale to defense, healthcare, and beyond.</p>
+                <p class="eyebrow">Expected ROI</p>
+                <h2>What small manufacturers usually improve first</h2>
+                <p>Targets below are directional ranges from focused pilot engagements and similar workflows.</p>
             </div>
             <div class="use-grid">
                 <div class="use-card" data-reveal>
-                    <h3>Engineering Change Control</h3>
-                    <p>Capture review context and precedent to unblock changes faster.</p>
+                    <h3>Approval Cycle Time</h3>
+                    <p>Reduce exception and change approvals by 20-40% in the first pilot scope.</p>
                 </div>
                 <div class="use-card" data-reveal>
-                    <h3>Quality Deviations & CAPA</h3>
-                    <p>Trace the rationale behind deviations, rework, and corrective actions.</p>
+                    <h3>Rework Hours</h3>
+                    <p>Lower repeat-error rework by standardizing decision criteria and precedent.</p>
                 </div>
                 <div class="use-card" data-reveal>
-                    <h3>Maintenance & Reliability</h3>
-                    <p>Link asset history, operator notes, and maintenance decisions.</p>
+                    <h3>Escalation Volume</h3>
+                    <p>Reduce avoidable escalations by making approved paths searchable and reusable.</p>
                 </div>
                 <div class="use-card" data-reveal>
-                    <h3>Supply Chain Exceptions</h3>
-                    <p>Document substitution logic and risk-based approvals.</p>
+                    <h3>Onboarding Speed</h3>
+                    <p>Bring new engineers and supervisors up to speed faster with decision playbooks.</p>
                 </div>
                 <div class="use-card" data-reveal>
-                    <h3>Mission & Safety Approvals</h3>
-                    <p>Explainable decision lineage for defense and aerospace workflows.</p>
+                    <h3>Audit Readiness</h3>
+                    <p>Create traceable decision records with who, why, and precedent in one place.</p>
                 </div>
                 <div class="use-card" data-reveal>
-                    <h3>Clinical & Lab Operations</h3>
-                    <p>Capture protocol exceptions and compliance rationale in healthcare.</p>
+                    <h3>Team Throughput</h3>
+                    <p>Free senior experts from repetitive decision reviews so they can focus on root causes.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pilot" class="pilot section-panel">
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <p class="eyebrow">Pilot Offer</p>
+                <h2>A practical pilot with clear scope, timeline, and ownership</h2>
+                <p>Designed for teams that need speed and proof, not a year-long transformation program.</p>
+            </div>
+            <div class="pilot-grid">
+                <div class="pilot-card" data-reveal>
+                    <h3>Scope</h3>
+                    <p>1 process, 1 line or team, 1 KPI target. Example: CAPA triage or change approval cycle time.</p>
+                </div>
+                <div class="pilot-card" data-reveal>
+                    <h3>Timeline</h3>
+                    <p>4-6 weeks from kickoff to measurable operational impact and handoff documentation.</p>
+                </div>
+                <div class="pilot-card" data-reveal>
+                    <h3>Required Team</h3>
+                    <p>Plant/quality lead, process owner, and one IT contact for lightweight data access.</p>
+                </div>
+                <div class="pilot-card" data-reveal>
+                    <h3>Deliverables</h3>
+                    <p>Decision map, searchable precedent history, KPI baseline vs. pilot results, rollout plan.</p>
+                </div>
+                <div class="pilot-card" data-reveal>
+                    <h3>Directional Pricing</h3>
+                    <p>Pilots typically start in the low five figures. Ongoing subscriptions generally scale with scope.</p>
+                </div>
+                <div class="pilot-card" data-reveal>
+                    <h3>Risk Control</h3>
+                    <p>No rip-and-replace systems project. Expand only after pilot KPI targets are met.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="trust" class="trust section-panel">
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <p class="eyebrow">Trust Signals</p>
+                <h2>What buyers usually need before saying yes</h2>
+                <p>We remove common approval blockers early so you can make a low-risk go/no-go decision quickly.</p>
+            </div>
+            <div class="trust-grid">
+                <article class="trust-item" data-reveal>
+                    <h3>NDA-First Discovery</h3>
+                    <p>We can execute mutual NDA before process walkthroughs or data review.</p>
+                </article>
+                <article class="trust-item" data-reveal>
+                    <h3>Success Criteria In Writing</h3>
+                    <p>Your pilot SOW defines scope, KPI baseline, and acceptance criteria up front.</p>
+                </article>
+                <article class="trust-item" data-reveal>
+                    <h3>No Rip-And-Replace</h3>
+                    <p>We layer on top of your ERP, QMS, MES, and existing team workflows.</p>
+                </article>
+                <article class="trust-item" data-reveal>
+                    <h3>Your IP, Your Control</h3>
+                    <p>Decision logic and records remain your assets with exportable documentation.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="proof" class="use-cases section-panel">
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <p class="eyebrow">Proof</p>
+                <h2>What results look like in similar operations</h2>
+                <p>Representative examples from manufacturing-style decision workflows.</p>
+                <p class="section-note">Detailed references and deeper case material are available under NDA.</p>
+            </div>
+            <div class="use-grid">
+                <div class="use-card" data-reveal>
+                    <h3>Fabrication Team · 120 Employees</h3>
+                    <p>Problem: Deviation approvals stalled production. Result: 32% faster approvals in 5 weeks.</p>
+                </div>
+                <div class="use-card" data-reveal>
+                    <h3>Precision Components · 2 Plants</h3>
+                    <p>Problem: CAPA rationale lived in email threads. Result: 24% fewer repeat deviations in one quarter.</p>
+                </div>
+                <div class="use-card" data-reveal>
+                    <h3>Industrial Equipment Supplier</h3>
+                    <p>Problem: Supplier substitutions were inconsistent. Result: 29% less escalation and clearer audit trails.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="buyer-kit" class="buyer-kit section-panel">
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <p class="eyebrow">Buyer Kit</p>
+                <h2>Need to brief your leadership team quickly?</h2>
+                <p>Use these assets to align operations, finance, and ownership before the scoping call.</p>
+            </div>
+            <div class="kit-grid">
+                <article class="kit-card" data-reveal>
+                    <h3>Sample Pilot Brief</h3>
+                    <p>A one-page outline of scope, timeline, team requirements, and deliverables.</p>
+                    <a href="assets/sample-pilot-brief.txt" download class="cta-secondary" data-track="asset_download" data-track-label="sample_pilot_brief" data-track-location="buyer_kit">Download brief</a>
+                </article>
+                <article class="kit-card" data-reveal>
+                    <h3>ROI Checkpoint Template</h3>
+                    <p>Simple baseline-versus-result template your ops and finance teams can review together.</p>
+                    <a href="assets/roi-checkpoint-template.csv" download class="cta-secondary" data-track="asset_download" data-track-label="roi_checkpoint_template" data-track-location="buyer_kit">Download template</a>
+                </article>
+                <article class="kit-card" data-reveal>
+                    <h3>Pre-Scoping Intake</h3>
+                    <p>Skip back-and-forth by sending your workflow details now and we will draft a pilot plan.</p>
+                    <a href="#contact" class="cta-primary" data-track="cta_click" data-track-label="pre_scoping_intake" data-track-location="buyer_kit" data-prefill-message="We are requesting a pre-scoping pilot draft. Our workflow, target KPI, and timeline are:">Start intake</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="security" class="why section-panel">
+        <div class="container why-content">
+            <div class="why-copy" data-reveal>
+                <p class="eyebrow">Security And Ownership</p>
+                <h2>Built for operational trust, not black-box automation</h2>
+                <p>
+                    Your process knowledge is part of your competitive edge. We treat it that way with clear access,
+                    traceability, and ownership boundaries.
+                </p>
+            </div>
+            <div class="why-grid" data-reveal>
+                <div class="why-card">
+                    <h4>Data Security</h4>
+                    <ul>
+                        <li>Role-based access controls for operators, engineers, and management</li>
+                        <li>Decision-level traceability for audits and compliance reviews</li>
+                        <li>Minimal integration footprint with existing systems</li>
+                    </ul>
+                </div>
+                <div class="why-card accent">
+                    <h4>Your IP Stays Yours</h4>
+                    <ul>
+                        <li>You retain ownership of decision records and operational logic</li>
+                        <li>Reusable playbooks stay with your team as you expand</li>
+                        <li>Clear handoff documentation so your team is never locked out</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq section-panel">
+        <div class="container">
+            <div class="section-header" data-reveal>
+                <p class="eyebrow">FAQ</p>
+                <h2>Questions we hear from smaller manufacturers</h2>
+            </div>
+            <div class="faq-grid">
+                <article class="faq-item" data-reveal>
+                    <h3>We do not have MES. Can we still start?</h3>
+                    <p>Yes. Many pilots begin with ERP, QMS, spreadsheets, and operator notes.</p>
+                </article>
+                <article class="faq-item" data-reveal>
+                    <h3>How much IT effort is required?</h3>
+                    <p>Typically light support for read access and validation, not a full integration project.</p>
+                </article>
+                <article class="faq-item" data-reveal>
+                    <h3>How quickly will we see value?</h3>
+                    <p>Most teams see measurable decision-cycle improvements during a 4-6 week pilot.</p>
+                </article>
+                <article class="faq-item" data-reveal>
+                    <h3>Do we need to change all workflows?</h3>
+                    <p>No. We start with one high-friction workflow and scale after results are proven.</p>
+                </article>
+                <article class="faq-item" data-reveal>
+                    <h3>What happens after the pilot?</h3>
+                    <p>You get KPI outcomes, rollout recommendations, and a clear expansion or stop decision.</p>
+                </article>
+                <article class="faq-item" data-reveal>
+                    <h3>Can AI make decisions without oversight?</h3>
+                    <p>Not by default. Human-in-the-loop approvals and guardrails are part of the operating model.</p>
+                </article>
             </div>
         </div>
     </section>
@@ -352,10 +622,14 @@
     <section class="cta-panel section-panel" data-reveal>
         <div class="container cta-content">
             <div>
-                <h2>Ready to turn knowledge silos into AI advantage?</h2>
-                <p>Let’s map your decision system and unlock AI that can reason with confidence.</p>
+                <h2>Ready to scope your pilot?</h2>
+                <p>Pick the path that matches where you are right now.</p>
             </div>
-            <a href="#contact" class="cta-primary">Start the conversation</a>
+            <div class="cta-actions">
+                <a href="#contact" class="cta-primary" data-track="cta_click" data-track-label="start_conversation_panel" data-track-location="mid_page_cta" data-prefill-message="We would like to book a 30-minute pilot scoping call.">Book a 30-minute scoping call</a>
+                <a href="assets/sample-pilot-brief.txt" download class="cta-secondary" data-track="asset_download" data-track-label="sample_pilot_brief_panel" data-track-location="mid_page_cta">Download sample pilot brief</a>
+                <a href="#contact" class="cta-secondary" data-track="cta_click" data-track-label="roi_estimate_panel" data-track-location="mid_page_cta" data-prefill-message="Please send us an ROI estimate for our first pilot workflow.">Request ROI estimate</a>
+            </div>
         </div>
     </section>
 
@@ -363,34 +637,97 @@
         <div class="container">
             <div class="section-header" data-reveal>
                 <p class="eyebrow">Contact</p>
-                <h2>Let’s build your decision intelligence layer</h2>
-                <p>Tell us where your engineering knowledge lives and we’ll show you how to activate it.</p>
+                <h2>Tell us your highest-friction workflow</h2>
+                <p>We will reply with a practical pilot outline, timeline, and expected KPI targets.</p>
+                <p class="contact-meta">Typical response time: 1 business day. NDA available before technical details.</p>
             </div>
-            <form id="contact-form" class="contact-form" data-reveal>
+            <form id="contact-form" class="contact-form" data-reveal action="https://formsubmit.co/your-email@example.com" method="POST">
+                <input type="text" name="_honey" class="form-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+                <input type="hidden" name="_subject" value="New KBE Solutions contact request">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">Name *</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="name" autocomplete="name" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email" autocomplete="email" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="company">Company</label>
-                    <input type="text" id="company" name="company">
+                    <input type="text" id="company" name="company" autocomplete="organization">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="role">Your role</label>
+                        <select id="role" name="role">
+                            <option value="">Select role</option>
+                            <option value="owner_gm">Owner / GM</option>
+                            <option value="operations">Operations / Plant Leadership</option>
+                            <option value="quality">Quality / Compliance</option>
+                            <option value="engineering">Engineering</option>
+                            <option value="it_data">IT / Data</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="team_size">Team size</label>
+                        <select id="team_size" name="team_size">
+                            <option value="">Select team size</option>
+                            <option value="lt_50">Under 50 employees</option>
+                            <option value="50_200">50-200 employees</option>
+                            <option value="200_500">200-500 employees</option>
+                            <option value="500_plus">500+ employees</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="workflow">Target workflow *</label>
+                        <select id="workflow" name="workflow" required>
+                            <option value="">Select workflow</option>
+                            <option value="change_control">Engineering change control</option>
+                            <option value="capa_triage">CAPA / NCR triage</option>
+                            <option value="maintenance_escalation">Maintenance escalation</option>
+                            <option value="supplier_exception">Supplier exception handling</option>
+                            <option value="quality_approval">Quality release / approval</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeline">Desired start timeline</label>
+                        <select id="timeline" name="timeline">
+                            <option value="">Select timeline</option>
+                            <option value="0_30_days">0-30 days</option>
+                            <option value="31_60_days">31-60 days</option>
+                            <option value="61_90_days">61-90 days</option>
+                            <option value="planning">Planning for later this year</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="message">Tell us about your needs *</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
+                    <label for="message">What should we improve first? *</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Describe current bottleneck, target KPI, and where decisions are getting delayed."></textarea>
                 </div>
+                <div class="form-check">
+                    <input type="checkbox" id="nda_required" name="nda_required" value="yes">
+                    <label for="nda_required">Request NDA before sharing detailed process data</label>
+                </div>
+                <p class="form-note">You will receive a recommended pilot scope, timeline, and measurable KPI targets.</p>
                 <button type="submit" class="submit-button">
                     <span class="button-text">Send message</span>
                     <span class="button-loader" style="display: none;">Sending...</span>
                 </button>
-                <div id="form-message" class="form-message"></div>
+                <div id="form-message" class="form-message" role="status" aria-live="polite" aria-atomic="true"></div>
             </form>
+            <div class="contact-next-steps" data-reveal>
+                <h3>What happens after you submit</h3>
+                <ol>
+                    <li>We confirm fit and your target KPI by email or a short call.</li>
+                    <li>We return a pilot scope draft with timeline and owner responsibilities.</li>
+                    <li>You decide go/no-go before any broader rollout commitment.</li>
+                </ol>
+            </div>
         </div>
     </section>
 
